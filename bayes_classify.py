@@ -1,14 +1,21 @@
-#!/usr/bin/env python
+#!/usr/local/bin/python
+#  !/usr/bin/env python
 """A more advanced Mapper, using Python iterators and generators."""
 
 import sys
 from hlib import *
 from math import log
-    
+import os
+
+sys.path.append(".")
+
 def bayes_predict(instance, counter_clazz_feature_value, counter_classes, N):
     # Find priorities
     Pk = { clazz : Nk/N for clazz, Nk in counter_classes.items()}
-    for clazz in Pk: print "Prior[{0}] = {1}".format(clazz, Pk[clazz])    
+    #Pk = dict()
+    #for clazz, Nk in counter_classes.items():
+	#	Pk[clazz] = Nk/N
+    #for clazz in Pk: print "Prior[{0}] = {1}".format(clazz, Pk[clazz])    
     
     # Find the conditional probabilities P(Xi|C=c)
     list_clazz = counter_classes.keys()
@@ -65,26 +72,22 @@ def mapper(key, value, writer):
     for test in testing_set:
         test_instance = test[:-1]
         test_clazz = test[-1]
-        print ""
-        print test_instance
+        #print "\n", test_instance," | ",test_clazz
+        print "\nreal-class:",test_clazz
         pred_clazz = bayes_predict(test_instance, counter_clazz_feature_value, counter_classes, N)
+        print "predicted as:", pred_clazz
         hits += int(test_clazz == pred_clazz)
     
-    print "\nAccuracy:\t{0}".format( len(testing_set)/(hits + 0.0) )
+    print "\nAccuracy:\t{0}".format( (hits + 0.0)/len(testing_set) )
     print "N-test:\t{0}".format( len(testing_set) )
     print "Hits:\t{0}".format(hits)
 
-def load_testing_set():
-    raw_data = """rainy,68,80,FALSE,yes
-rainy,65,70,TRUE,no
-overcast,64,65,TRUE,yes
-sunny,72,95,FALSE,no
-sunny,69,70,FALSE,yes
-rainy,75,80,FALSE,yes
-sunny,75,70,TRUE,yes"""
-    return [ line.strip().split(",") for line in raw_data.splitlines() ]
 
-        
+def load_testing_set():
+    filename = "miscellaneous/testing-set.arff"
+    with open(filename) as test_file:
+        testing_set = [line.strip().split(",") for line in test_file]
+    return testing_set        
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env /usr/local/bin/python
 """A more advanced Mapper, using Python iterators and generators."""
 
 import sys
