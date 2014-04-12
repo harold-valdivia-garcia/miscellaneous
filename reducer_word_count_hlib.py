@@ -19,5 +19,5 @@ def reducer(key, iterator_values, writer):
 
 
 if __name__ == "__main__":
-    MainMapReduce().run_reducer(reducer, separator="\t")
+    MainMapReduce().run_reducer(reducer, input_separator="\t")
 

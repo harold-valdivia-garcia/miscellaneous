@@ -11,5 +11,5 @@ def mapper(key, value, writer):
 
 
 if __name__ == "__main__":
-    MainMapReduce().run_mapper(mapper, separator="\t")
+    MainMapReduce().run_mapper(mapper, output_separator="\t")
 
